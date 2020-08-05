@@ -475,7 +475,7 @@ function buildTransactionSignature(parameters, transactionSecret, callback) {
         let signature = hmac.read();
         if (signature) {
             sigHex = signature.toString('hex');
-            console.log(sigHex);
+            // console.log(sigHex);
             callback(sigHex);
         }
     });
