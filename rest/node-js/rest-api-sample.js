@@ -46,7 +46,7 @@ let PORT = 443;
 /**
  * Public trade market data API
  */
-// getTime();
+getTime();
 // getSymbol();
 // getTickerForSymbol();
 // getTicker();
@@ -81,7 +81,7 @@ let PORT = 443;
  * EuroWallet API
  */
 // createEwPayment();
-getNexpayPaymentHistory();
+// getNexpayPaymentHistory();
 
 
 //################################# Public Market Data API methods ##################################
