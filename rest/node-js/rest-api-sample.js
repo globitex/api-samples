@@ -26,6 +26,7 @@ let PATH_PAYMENT_EXCHANGE_TRANSFER_CREATE   = "/api/1/payment/payout/exchange";
 let PATH_PAYMENT_INTERNAL_TRANSFER_CREATE   = "/api/1/payment/internal";
 
 let PATH_EW_PAYMENT_CREATE                  = "/api/1/eurowallet/payments";
+let PATH_EW_PAYMENT_HISTORY                 = "/api/1/eurowallet/payments/history";
 
 let tradeAccountNumber  = "ZAN189A01";
 let tradeAccountNumber2 = "ZAN189A02";
@@ -45,7 +46,7 @@ let PORT = 443;
 /**
  * Public trade market data API
  */
-getTime();
+// getTime();
 // getSymbol();
 // getTickerForSymbol();
 // getTicker();
@@ -80,6 +81,7 @@ getTime();
  * EuroWallet API
  */
 // createEwPayment();
+getNexpayPaymentHistory();
 
 
 //################################# Public Market Data API methods ##################################
@@ -392,7 +394,7 @@ function createInternalTransfer() {
     }
 }
 
-//################################# EuroWallet methods ##################################
+//################################# NexPay banking methods ##################################
 
 function createEwPayment() {
     let nonce = (new Date).getTime();
@@ -416,6 +418,22 @@ function createEwPayment() {
         function callback(header) {
             client.post(BASE_URL, PATH_EW_PAYMENT_CREATE, PORT, parameters, header)
         }
+    }
+}
+
+function getNexpayPaymentHistory() {
+    let nonce = (new Date).getTime();
+    let path = PATH_EW_PAYMENT_HISTORY;
+
+    let parameters = {
+        fromDate: "2019-01-01",
+        toDate: "2019-03-01"
+    };
+
+    getHeaders(nonce, path, parameters, callback);
+
+    function callback(header) {
+        client.get(BASE_URL, path, PORT, parameters, header)
     }
 }
 
