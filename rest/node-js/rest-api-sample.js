@@ -25,8 +25,8 @@ let PATH_PAYMENT_BANK_CREATE                = "/api/1/payment/payout/bank";
 let PATH_PAYMENT_EXCHANGE_TRANSFER_CREATE   = "/api/1/payment/payout/exchange";
 let PATH_PAYMENT_INTERNAL_TRANSFER_CREATE   = "/api/1/payment/internal";
 
-let PATH_EW_PAYMENT_CREATE                  = "/api/1/eurowallet/payments";
-let PATH_EW_PAYMENT_HISTORY                 = "/api/1/eurowallet/payments/history";
+let PATH_NXP_PAYMENT_CREATE                  = "/api/1/eurowallet/payments";
+let PATH_NXP_PAYMENT_HISTORY                 = "/api/1/eurowallet/payments/history";
 
 let tradeAccountNumber  = "ZAN189A01";
 let tradeAccountNumber2 = "ZAN189A02";
@@ -55,7 +55,7 @@ getTime();
 
 
 /**
- * Trading API
+ * Exchange Trading API
  */
 // getActiveOrders();
 // getMyTrades();
@@ -67,7 +67,7 @@ getTime();
 
 
 /**
- * Globitex Payment API
+ * Exchange Payment API
  */
 // getAccountsAndBalance();
 // getTransactions();
@@ -78,9 +78,9 @@ getTime();
 // createExchangeTransfer();
 
 /**
- * EuroWallet API
+ * Nexpay payment API
  */
-// createEwPayment();
+// createNexpayPayment();
 // getNexpayPaymentHistory();
 
 
@@ -113,7 +113,7 @@ function getTradesForSymbol() {
     client.get(BASE_URL, PATH_TRADES_FOR_SYMBOL + "/" + symbol, PORT);
 }
 
-//################################# Trading API methods ##################################
+//################################# Exchange Trading API methods ##################################
 
 function getActiveOrders() {
     let nonce = (new Date).getTime();
@@ -254,7 +254,7 @@ function cancelAllOrders() {
     }
 }
 
-//################################# Globitex Payment methods ##################################
+//################################# Exchange Payment methods ##################################
 
 function getAccountsAndBalance() {
     let nonce = (new Date).getTime();
@@ -395,9 +395,9 @@ function createInternalTransfer() {
     }
 }
 
-//################################# NexPay banking methods ##################################
+//################################# NexPay API methods ##################################
 
-function createEwPayment() {
+function createNexpayPayment() {
     let nonce = (new Date).getTime();
     let parameters = {
         requestTime: nonce,
@@ -414,17 +414,17 @@ function createEwPayment() {
     function setSignature(txSignature) {
         parameters["transactionSignature"] = txSignature;
 
-        getHeaders(nonce, PATH_EW_PAYMENT_CREATE, parameters, callback);
+        getHeaders(nonce, PATH_NXP_PAYMENT_CREATE, parameters, callback);
 
         function callback(header) {
-            client.post(BASE_URL, PATH_EW_PAYMENT_CREATE, PORT, parameters, header)
+            client.post(BASE_URL, PATH_NXP_PAYMENT_CREATE, PORT, parameters, header)
         }
     }
 }
 
 function getNexpayPaymentHistory() {
     let nonce = (new Date).getTime();
-    let path = PATH_EW_PAYMENT_HISTORY;
+    let path = PATH_NXP_PAYMENT_HISTORY;
 
     let parameters = {
         fromDate: "2019-01-01",
