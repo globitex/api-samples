@@ -2,39 +2,41 @@ let client = require('./rest-client');
 let crypto = require('crypto');
 
 
-let PATH_TIME                               = "/api/1/public/time";
-let PATH_SYMBOLS                            = "/api/1/public/symbols";
-let PATH_ORDER_BOOK                         = "/api/1/public/orderbook";
-let PATH_TICKER_FOR_SYMBOL                  = "/api/1/public/ticker";
-let PATH_TICKER                             = "/api/1/public/ticker";
-let PATH_TRADES_FOR_SYMBOL                  = "/api/1/public/trades";
+let PATH_TIME = "/api/1/public/time";
+let PATH_SYMBOLS = "/api/1/public/symbols";
+let PATH_ORDER_BOOK = "/api/1/public/orderbook";
+let PATH_TICKER_FOR_SYMBOL = "/api/1/public/ticker";
+let PATH_TICKER = "/api/1/public/ticker";
+let PATH_TRADES_FOR_SYMBOL = "/api/1/public/trades";
 
-let PATH_TRADES                             = "/api/1/trading/trades";
-let PATH_ACTIVE_ORDERS                      = "/api/1/trading/orders/active";
-let PATH_RECENT_ORDERS                      = "/api/1/trading/orders/recent";
-let PATH_USER_ORDER                         = "/api/1/trading/order";
-let PATH_NEW_ORDER                          = "/api/1/trading/new_order";
-let PATH_CANCEL_ORDER                       = "/api/2/trading/cancel_order";
-let PATH_CANCEL_ALL_ORDERS                  = "/api/1/trading/cancel_orders";
+let PATH_TRADES = "/api/1/trading/trades";
+let PATH_ACTIVE_ORDERS = "/api/1/trading/orders/active";
+let PATH_RECENT_ORDERS = "/api/1/trading/orders/recent";
+let PATH_USER_ORDER = "/api/1/trading/order";
+let PATH_NEW_ORDER = "/api/1/trading/new_order";
+let PATH_CANCEL_ORDER = "/api/2/trading/cancel_order";
+let PATH_CANCEL_ALL_ORDERS = "/api/1/trading/cancel_orders";
 
-let PATH_PAYMENT_ACCOUNTS                   = "/api/1/payment/accounts";
-let PATH_PAYMENT_TRANSACTIONS               = "/api/1/payment/transactions";
+let PATH_PAYMENT_ACCOUNTS = "/api/1/payment/accounts";
+let PATH_PAYMENT_TRANSACTIONS = "/api/1/payment/transactions";
 
-let PATH_PAYMENT_CRYPTO_CREATE              = "/api/1/payment/payout/crypto";
-let PATH_PAYMENT_BANK_CREATE                = "/api/1/payment/payout/bank";
-let PATH_PAYMENT_EXCHANGE_TRANSFER_CREATE   = "/api/1/payment/payout/exchange";
-let PATH_PAYMENT_INTERNAL_TRANSFER_CREATE   = "/api/1/payment/internal";
+let PATH_PAYMENT_CRYPTO_CREATE = "/api/1/payment/payout/crypto";
+let PATH_PAYMENT_BANK_CREATE = "/api/1/payment/payout/bank";
+let PATH_PAYMENT_EXCHANGE_TRANSFER_CREATE = "/api/1/payment/payout/exchange";
+let PATH_PAYMENT_INTERNAL_TRANSFER_CREATE = "/api/1/payment/internal";
 
-let PATH_NXP_PAYMENT_CREATE                  = "/api/1/eurowallet/payments";
-let PATH_NXP_PAYMENT_HISTORY                 = "/api/1/eurowallet/payments/history";
-let PATH_NXP_PAYMENT_STATUS                  = "/api/1/eurowallet/payments/status";
+let PATH_NXP_PAYMENT_CREATE = "/api/1/eurowallet/payments";
+let PATH_NXP_PAYMENT_HISTORY = "/api/1/eurowallet/payments/history";
+let PATH_NXP_PAYMENT_STATUS = "/api/1/eurowallet/payments/status";
+let PATH_NXP_BATCH_STATUS = "/api/1/eurowallet/batch/status"
+let PATH_NXP_BATCH_PAYMENTS_STATUSES = "/api/1/eurowallet/batch/payments/statuses"
 
-let tradeAccountNumber  = "ZAN189A01";
+let tradeAccountNumber = "ZAN189A01";
 let tradeAccountNumber2 = "ZAN189A02";
 
-let apiKey                  = "40afac12fa7515b5f108e84c06710b68";
-let apiSecret               = "7829d11fa04e4316b5c6486d9c5a7c9a5b90af0fec601fd46e0fe8f0b9141dea";
-let apiTransactionSecret    = "003c585b08c337416acfa5958d39fe5bd494c4f283edcbf0ae84b8786ef28d0b";
+let apiKey = "6f3f0a36adca56f58437c5cbc7868de9";
+let apiSecret = "9bfe16c203cc569455b1b878f3f97d0641a2f0c3ead3125b5c7a9a53a2c46666";
+let apiTransactionSecret = "d7ea89e8702d5c56cf19cec0bb322cdda5dd88f665103a8821b08b84888d7c70";
 
 let BASE_URL = "api.globitex.com";
 let PORT = 443;
@@ -47,7 +49,7 @@ let PORT = 443;
 /**
  * Public trade market data API
  */
-getTime();
+// getTime();
 // getSymbol();
 // getTickerForSymbol();
 // getTicker();
@@ -84,6 +86,8 @@ getTime();
 // createNexpayPayment();
 // getNexpayPaymentHistory();
 // getNexpayPaymentStatus();
+// getNexpayBatchStatus();
+getNexpayBatchPaymentStatuses();
 
 
 //################################# Public Market Data API methods ##################################
@@ -368,6 +372,7 @@ function createExchangeTransfer() {
     };
 
     buildTransactionSignature(parameters, apiTransactionSecret, setSignature);
+
     function setSignature(txSignature) {
         parameters["transactionSignature"] = txSignature;
 
@@ -446,6 +451,36 @@ function getNexpayPaymentStatus() {
 
     let parameters = {
         externalPaymentId: "API_T_1"
+    };
+
+    getHeaders(nonce, path, parameters, callback);
+
+    function callback(header) {
+        client.get(BASE_URL, path, PORT, parameters, header)
+    }
+}
+
+function getNexpayBatchStatus() {
+    let nonce = (new Date).getTime();
+    let path = PATH_NXP_BATCH_STATUS;
+
+    let parameters = {
+        reference: "01024080333"
+    };
+
+    getHeaders(nonce, path, parameters, callback);
+
+    function callback(header) {
+        client.get(BASE_URL, path, PORT, parameters, header)
+    }
+}
+
+function getNexpayBatchPaymentStatuses() {
+    let nonce = (new Date).getTime();
+    let path = PATH_NXP_BATCH_PAYMENTS_STATUSES;
+
+    let parameters = {
+        reference: "01024080333"
     };
 
     getHeaders(nonce, path, parameters, callback);
