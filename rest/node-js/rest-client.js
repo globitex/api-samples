@@ -1,7 +1,7 @@
 var querystring = require('querystring');
 var https = require('https');
 
-var allowSelfSignedCerts = false;
+var allowSelfSignedCerts = true;
 
 exports.get = function(baseUrl, endpoint, port, data, headers){
     var options = {
