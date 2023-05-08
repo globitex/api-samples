@@ -19,6 +19,7 @@ let PATH_CANCEL_ALL_ORDERS                  = "/api/1/trading/cancel_orders";
 
 let PATH_PAYMENT_ACCOUNTS                   = "/api/1/payment/accounts";
 let PATH_PAYMENT_TRANSACTIONS               = "/api/1/payment/transactions";
+let PATH_DEPOSIT_CRYPTO_ADDRESS             = "/api/1/payment/deposit/crypto/address";
 
 let PATH_PAYMENT_CRYPTO_CREATE              = "/api/1/payment/payout/crypto";
 let PATH_PAYMENT_BANK_CREATE                = "/api/1/payment/payout/bank";
@@ -36,8 +37,11 @@ let apiKey                  = "40afac12fa7515b5f108e84c06710b68";
 let apiSecret               = "7829d11fa04e4316b5c6486d9c5a7c9a5b90af0fec601fd46e0fe8f0b9141dea";
 let apiTransactionSecret    = "003c585b08c337416acfa5958d39fe5bd494c4f283edcbf0ae84b8786ef28d0b";
 
-let BASE_URL = "api.globitex.com";
-let PORT = 443;
+// let BASE_URL = "api.globitex.com";
+// let PORT = 443;
+
+let BASE_URL = "10.195.3.141";
+let PORT = 7553;
 
 /**
  *  uncomment methods to make api calls
@@ -47,7 +51,7 @@ let PORT = 443;
 /**
  * Public trade market data API
  */
-getTime();
+// getTime();
 // getSymbol();
 // getTickerForSymbol();
 // getTicker();
@@ -72,7 +76,7 @@ getTime();
  */
 // getAccountsAndBalance();
 // getTransactions();
-// createCryptoWithdrawal();
+// getDepositDetails();
 // createCryptoTransfer();
 // createBankTransfer();
 // createInternalTransfer();
@@ -82,7 +86,7 @@ getTime();
  * Nexpay payment API
  */
 // createNexpayPayment();
-// getNexpayPaymentHistory();
+getNexpayPaymentHistory();
 // getNexpayPaymentStatus();
 
 
@@ -292,17 +296,32 @@ function getTransactions() {
     }
 }
 
+function getDepositDetails() {
+    let nonce = (new Date).getTime();
+    let path = PATH_DEPOSIT_CRYPTO_ADDRESS;
+
+    let parameters = {
+        currency: "ETHG"
+    };
+
+    getHeaders(nonce, path, parameters, callback);
+
+    function callback(header) {
+        client.get(BASE_URL, path, PORT, parameters, header)
+    }
+}
+
 function createCryptoTransfer() {
     let nonce = (new Date).getTime();
     let parameters = {
         requestTime: nonce,
-        amount: "0.1",
-        currency: "BTC",
+        amount: "0.005",
+        currency: "ETHG",
         account: tradeAccountNumber,
-        address: "2MtNtLcUVS37Tc31JaFSwHNeUq8Rx5EEADY",      //testnet address (use main net address for production)
+        address: "0xA258c7f25E66FE3614AbC6592A85c9a6a23212A6",      //testnet address (use main net address for production)
         // notes:,
         // commissionSource: "account",
-        commission: 0.0001,
+        commission: 0.001,
         // clientTransId: "testCrypto" + nonce,
         // feeId: 1111
     };
@@ -429,8 +448,8 @@ function getNexpayPaymentHistory() {
     let path = PATH_NXP_PAYMENT_HISTORY;
 
     let parameters = {
-        fromDate: "2019-01-01",
-        toDate: "2019-03-01"
+        fromDate: "2022-11-10",
+        toDate: "2022-11-10"
     };
 
     getHeaders(nonce, path, parameters, callback);
