@@ -30,6 +30,8 @@ let PATH_NXP_PAYMENT_CREATE                  = "/api/1/eurowallet/payments";
 let PATH_NXP_PAYMENT_HISTORY                 = "/api/1/eurowallet/payments/history";
 let PATH_NXP_PAYMENT_STATUS                  = "/api/1/eurowallet/payments/status";
 
+let PATH_NXP_PAYMENT_DETAILS                 = "/api/1/nexpay/payments";
+
 let tradeAccountNumber  = "ZAN189A01";
 let tradeAccountNumber2 = "ZAN189A02";
 
@@ -86,8 +88,9 @@ let PORT = 7553;
  * Nexpay payment API
  */
 // createNexpayPayment();
-getNexpayPaymentHistory();
+// getNexpayPaymentHistory();
 // getNexpayPaymentStatus();
+getNexpayPaymentDetails();
 
 
 //################################# Public Market Data API methods ##################################
@@ -465,6 +468,22 @@ function getNexpayPaymentStatus() {
 
     let parameters = {
         externalPaymentId: "API_T_1"
+    };
+
+    getHeaders(nonce, path, parameters, callback);
+
+    function callback(header) {
+        client.get(BASE_URL, path, PORT, parameters, header)
+    }
+}
+
+function getNexpayPaymentDetails() {
+    let nonce = (new Date).getTime();
+    let path = PATH_NXP_PAYMENT_DETAILS;
+
+    let parameters = {
+        clientPaymentId: 1635
+        // externalPaymentId: "EXT_2"
     };
 
     getHeaders(nonce, path, parameters, callback);
