@@ -26,7 +26,7 @@ let PATH_PAYMENT_BANK_CREATE                = "/api/1/payment/payout/bank";
 let PATH_PAYMENT_EXCHANGE_TRANSFER_CREATE   = "/api/1/payment/payout/exchange";
 let PATH_PAYMENT_INTERNAL_TRANSFER_CREATE   = "/api/1/payment/internal";
 
-let PATH_NXP_PAYMENT_CREATE                  = "/api/1/eurowallet/payments";
+let PATH_NXP_PAYMENT_CREATE                  = "/api/2/eurowallet/payments";
 let PATH_NXP_PAYMENT_HISTORY                 = "/api/1/eurowallet/payments/history";
 let PATH_NXP_PAYMENT_STATUS                  = "/api/1/eurowallet/payments/status";
 
@@ -39,11 +39,8 @@ let apiKey                  = "40afac12fa7515b5f108e84c06710b68";
 let apiSecret               = "7829d11fa04e4316b5c6486d9c5a7c9a5b90af0fec601fd46e0fe8f0b9141dea";
 let apiTransactionSecret    = "003c585b08c337416acfa5958d39fe5bd494c4f283edcbf0ae84b8786ef28d0b";
 
-// let BASE_URL = "api.globitex.com";
-// let PORT = 443;
-
-let BASE_URL = "10.195.3.141";
-let PORT = 7553;
+let BASE_URL = "api.globitex.com";
+let PORT = 443;
 
 /**
  *  uncomment methods to make api calls
@@ -87,10 +84,10 @@ let PORT = 7553;
 /**
  * Nexpay payment API
  */
-// createNexpayPayment();
+createNexpayPayment();
 // getNexpayPaymentHistory();
 // getNexpayPaymentStatus();
-getNexpayPaymentDetails();
+// getNexpayPaymentDetails();
 
 
 //################################# Public Market Data API methods ##################################
@@ -430,8 +427,8 @@ function createNexpayPayment() {
         beneficiaryName: "Some beneficiary name",
         beneficiaryAccount: "LT693080010000000294",
         beneficiaryReference: "Some reference text",
+        useGbxForFee: false,
         externalPaymentId: "API_T_" + nonce,
-        useGbxForFee: false
     };
     buildTransactionSignature(parameters, apiTransactionSecret, setSignature);
 
@@ -511,7 +508,7 @@ function getHeaders(nonce, path, parameters, callback) {
         sigStr = sigStr.substr(0, sigStr.length - 1);
     }
 
-    // console.log("sigStr: " + sigStr);
+    console.log("Raw request signature: " + sigStr);
 
     let hmac = crypto.createHmac('sha512', apiSecret);
 
@@ -543,7 +540,7 @@ function buildTransactionSignature(parameters, transactionSecret, callback) {
     }
     let hmac = crypto.createHmac('sha512', transactionSecret);
 
-    // console.log("tx sig str: " + sigStr);
+    console.log("Raw transaction signature: " + sigStr);
 
     hmac.on('readable', () => {
         let signature = hmac.read();
